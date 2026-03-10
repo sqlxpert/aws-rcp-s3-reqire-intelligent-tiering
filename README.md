@@ -86,7 +86,7 @@ storage class or, if overrides are permitted, the required object tag. The
 combination of features needed to make this practical didn't come about until
 November,&nbsp;2025.
 
-<detail>
+<details>
   <summary>AWS feature announcements that made it possible...</summary>
 
 <br/>
@@ -133,7 +133,7 @@ November,&nbsp;2025.
     [December&nbsp;14,&nbsp;2015](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WhatsNew.html#WhatsNew-earlier-doc-history):
     [s3:x-amz-storage-class](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-s3_x-amz-storage-class)
 
-</detail>
+</details>
 
 ## Installation
 
@@ -149,7 +149,7 @@ Coming soon!
 
 ### Resource Control Policy Test
 
-<detail>
+<details>
   <summary>RCP test script instructions</summary>
 
 <br/>
@@ -180,7 +180,7 @@ The IAM role you use for RCP testing must:
   - enable attribute-based access control for S3 buckets: `s3:PutBucketAbac`
   - enable versioning: `s3:PutBucketVersioning`
 
-</detail>
+</details>
 
 ### Service Control Policy Test
 
