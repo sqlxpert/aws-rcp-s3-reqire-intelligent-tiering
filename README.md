@@ -14,7 +14,7 @@ AWS&nbsp;Config, CloudFormation Hooks, and third-party Terraform tooling with
 Open Policy Agent all let you require lifecycle policies on S3 buckets, but
 creating objects directly in `INTELLIGENT_TIERING` makes lifecycle transition
 rules unnecessary. Checking hundreds or thousands of S3 buckets every
-24&nbps;hours with AWS Config isn't cheap, anyway. Neither is licensing and
+24&nbsp;hours with AWS Config isn't cheap, anyway. Neither is licensing and
 configuring third-party software.
 
 **I've discovered a practical way to enforce the initial storage class. Every
