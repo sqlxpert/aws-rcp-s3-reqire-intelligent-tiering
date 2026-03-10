@@ -32,8 +32,8 @@ RCP throughout your organization, because it doesn't affect existing buckets.
 ### Strict Bucket Tag
 
 To require Intelligent Tiering for all new objects, tag an S3 bucket with
-`cost&#8209;s3&#8209;require&#8209;storage&#8209;class&#8209;intelligent&#8209;tiering` (you can customize
-the tag) and enable
+`cost-s3-require-storage-class-intelligent-tiering` (you can customize the tag)
+and enable
 [attribute-based access control](https://aws.amazon.com/blogs/aws/introducing-attribute-based-access-control-for-amazon-s3-general-purpose-buckets)
 for the bucket.
 
@@ -58,13 +58,12 @@ Pretty soon, setting the storage class will be second-nature.
 
 To require Intelligent Tiering but let users override the requirement, tag an
 S3 bucket with
-`cost&#8209;s3&#8209;require&#8209;storage&#8209;class&#8209;intelligent&#8209;tiering&#8209;override&#8209;with&#8209;object&#8209;tag`
+`cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
 (again you can customize this) and enable ABAC for the bucket.
 
 A user can set any storage class (or omit the storage class, for `STANDARD`) by
-setting the
-`cost&#8209;s3&#8209;override&#8209;storage&#8209;class&#8209;intelligent&#8209;tiering`
-object tag when creating an object. Add:
+setting the `cost-s3-override-storage-class-intelligent-tiering` object tag
+when creating an object. Add:
 
 - `--tagging 'cost-s3-override-storage-class-intelligent-tiering='`<br/>when
   running `aws s3api put-object`
