@@ -4,27 +4,27 @@ _Enforce Intelligent Tiering by tagging S3 buckets..._
 
 Still relying on a lifecycle policy to transition S3 objects to
 [Intelligent Tiering](https://aws.amazon.com/s3/storage-classes/intelligent-tiering)
-after the fact? You're losing money! Set `--storage-class` in your scripts or
-`StorageClass` in your code to avoid the transition charge and start the
-discount countdown the moment you create each object.
+after the fact? You're losing money! Set `--storage-class` in scripts and
+`StorageClass` in code to avoid the transition charge and start the discount
+countdown the moment you create each object.
 
 But how do you make sure _everyone else_ is using Intelligent Tiering?
 
 AWS&nbsp;Config, CloudFormation Hooks, and third-party Terraform tooling with
-Open Policy Agent all let you require lifecycle policies on S3 buckets, but the
-best practice of creating objects directly in `INTELLIGENT_TIERING` makes
-lifecycle transition rules unnecessary. Checking hundreds or thousands of
-S3 buckets every 24 hours with AWS Config isn't cheap, anyway. Neither is
-licensing and configuring third-party software.
+Open Policy Agent all let you require lifecycle policies on S3 buckets, but
+creating objects directly in `INTELLIGENT_TIERING` makes lifecycle transition
+rules unnecessary. Checking hundreds or thousands of S3 buckets every
+24&nbps;hours with AWS Config isn't cheap, anyway. Neither is licensing and
+configuring third-party software.
 
-By putting three new AWS features and one old one together, I've found a
-practical way to enforce the initial storage class. Every time an object is
-created. By any user. In one S3 bucket or thousands. For free!
+**I've discovered a practical way to enforce the initial storage class. Every
+time an object is created. By any user. In one S3 bucket or thousands. For
+free!**
 
 ## How to Use It
 
-A single CloudFormation stack (Terraform is coming), deployed in your
-management account, creates a resource control policy. It's safe to apply the
+Deploying a single CloudFormation stack (Terraform is coming) in your
+management account creates a resource control policy. It's safe to apply the
 RCP throughout your organization, because it doesn't affect existing buckets.
 
 ### Strict Bucket Tag
@@ -43,10 +43,10 @@ Users who forget to...
   the equivalent in a different AWS SDK)
 - set the `x-amz-storage-class` header for the `PubObject` HTTPS API operation
 
-...will receive an `AccessDenied` error with the message "explicit deny in a
-resource control policy". Users can't see RCPs, but they can see
-"require-storage-class-intelligent-tiering" in the bucket tag. If they miss
-that, the RCP hint in the error message tells an administrator where to look.
+...will receive an "AccessDenied" error with the message "explicit deny in a
+resource control policy". If the user misses
+"require-storage-class-intelligent-tiering" in the bucket tag, the RCP hint in
+the error message tells an administrator where to look.
 
 Pretty soon, setting the storage class will be second-nature.
 
@@ -75,8 +75,8 @@ when creating an object. Add:
   `aws s3api put-object` instead.
 - If for some reason you add both bucket tags to a bucket, the permissive one
   wins. Overriding with an object tag will work.
-- Be sure to specify the override tag in the request every time you overwrite
-  an object or create a new version.
+- To override the storage class requirement when overwriting an object or
+  creating a new version, be sure to specify the object tag in the new request.
 
 ## How It Works
 
@@ -106,12 +106,12 @@ November,&nbsp;2025.
 
     June,&nbsp;2025: [Amazon S3 extends additional context for HTTP 403 Access Denied error messages to AWS Organizations](https://aws.amazon.com/about-aws/whats-new/2025/06/amazon-s3-context-http-403-access-denied-error-message-aws-organizations)
 
-    - S3 feature wish list: If AWS someday applies a related improvement to S3,
+    - S3 feature wish: If AWS someday applies a related improvement to S3,
       error messages will reveal the ARN of the resource control policy.
-      Although users still won't be able to read RCPs, knowing the policy ARN
-      would let first-time users search an internal knowledge base before
-      contacting an administrator. What a shame that AWS Organizations uses
-      arbitrary resource identifiers rather than user-determined names.
+      Although users can't view RCPs, knowing the policy ARN would let
+      first-time users search an internal knowledge base before asking an
+      administrator. What a shame that AWS Organizations uses arbitrary
+      resource identifiers rather than user-determined names.
       `arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-abcdefghij`
       isn't exactly rich with information!
 
@@ -149,6 +149,11 @@ Coming soon!
 
 ### Resource Control Policy Test
 
+<detail>
+  <summary>RCP test script instructions</summary>
+
+<br/>
+
 Test the RCP by running
 [test/0test-rcp-s3-require-intelligent-tiering.bash](/test/0test-rcp-s3-require-intelligent-tiering.bash?raw=true)&nbsp;.
 The script assumes that you have already run:
@@ -173,6 +178,9 @@ The IAM role you use for RCP testing must:
   - create, tag, and delete S3 buckets
   - create, tag, and delete S3 objects
   - enable attribute-based access control for S3 buckets: `s3:PutBucketAbac`
+  - enable versioning: `s3:PutBucketVersioning`
+
+</detail>
 
 ### Service Control Policy Test
 
