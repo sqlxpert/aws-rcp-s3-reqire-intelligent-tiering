@@ -39,10 +39,10 @@ for the bucket.
 
 Users who forget to...
 
-- add `--storage-class INTELLIGENT_TIERING` when running `aws s3 cp` or
-  `aws s3api put-object`
-- set `StorageClass` when calling `client("s3").put_object()` in boto3, or the
-  equivalent in a different AWS SDK
+- add `--storage-class INTELLIGENT_TIERING`<br/>
+  when running `aws s3 cp`<br/>or `aws s3api put-object`
+- set `StorageClass` when calling `client("s3").put_object()` in boto3,<br/>
+  (or the equivalent in a different AWS SDK)
 - set the `x-amz-storage-class` header when calling `PubObject` in the HTTPS
   API
 
@@ -61,18 +61,17 @@ S3 bucket with
 `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
 (again you can customize this) and enable ABAC for the bucket.
 
-A user can choose any storage class (or leave it to get `STANDARD`) by:
+A user can set any storage class (or omit it, for `STANDARD`) by adding:
 
-- adding `--tagging 'cost-s3-override-storage-class-intelligent-tiering='` when
+- `--tagging 'cost-s3-override-storage-class-intelligent-tiering='` when
   running `aws s3api put-object`
-- setting `Tagging=cost-s3-override-storage-class-intelligent-tiering=` when
-  calling  `client("s3").put_object()` in boto3, or the equivalent in a
-  different AWS SDK
-- setting the `x-amz-tagging` header to
-  `cost-s3-override-storage-class-intelligent-tiering=` when calling
-  `PubObject` in the HTTPS API. Encode `=` as `%3D` if
-  other software doesn't do it for you. Separate additional _tag_=_value_ pairs
-  with `&`&nbsp;, encoded as `%26`&nbsp;.
+- `Tagging=cost-s3-override-storage-class-intelligent-tiering=` when
+  calling `client("s3").put_object()` (or equivalent)
+- `x-amz-tagging: cost-s3-override-storage-class-intelligent-tiering=` (Encode
+  `=` as `%3D` if your HTTP library doesn't.)
+
+Unfortunately, `aws s3 cp` does not support object tags as of March,&nbsp;2026.
+Use `aws s3api put-object` instead.
 
 ## How It Works
 
