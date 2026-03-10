@@ -131,7 +131,7 @@ November,&nbsp;2025.
     control policies that can be applied to multiple accounts came much later.
 
     [December&nbsp;14,&nbsp;2015](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WhatsNew.html#WhatsNew-earlier-doc-history):
-    [s3:x-amz-storage-class](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-s3_x-amz-storage-class)
+    [The s3:x-amz-storage-class condition key](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-s3_x-amz-storage-class)
 
 </details>
 
