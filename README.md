@@ -2,6 +2,8 @@
 
 _Enforce use of Intelligent Tiering by tagging S3 buckets_
 
+---
+
 Still relying on a lifecycle policy to transition S3 objects to
 [Intelligent Tiering](https://aws.amazon.com/s3/storage-classes/intelligent-tiering)
 after the fact? You're losing money! Set `--storage-class` in your scripts or
@@ -113,7 +115,7 @@ The IAM role you use for RCP testing must:
 - have permission to:
   - create, tag, and delete S3 buckets
   - create, tag, and delete S3 objects
-  - enable attribute-based access control for S3 buckets (`s3:PutBucketAbac`)
+  - enable attribute-based access control for S3 buckets: `s3:PutBucketAbac`
 
 ### Service Control Policy Test
 
