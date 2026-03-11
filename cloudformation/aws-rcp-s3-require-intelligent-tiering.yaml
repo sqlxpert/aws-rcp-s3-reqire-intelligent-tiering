@@ -298,8 +298,8 @@ Resources:
               "Resource": "*",
               "Condition": {
                 "Null": {
-                  "s3:BucketTag/${S3BucketTagKeyStrict}": false,
-                  "s3:BucketTag/${S3BucketTagKeyPermissive}": true
+                  "s3:BucketTag/${S3BucketTagKeyStrict}": "false",
+                  "s3:BucketTag/${S3BucketTagKeyPermissive}": "true"
                 },
                 "StringNotEquals": {
                   "s3:x-amz-storage-class": "${RequireS3StorageClass}"
@@ -314,7 +314,7 @@ Resources:
               "Resource": "*",
               "Condition": {
                 "Null": {
-                  "s3:BucketTag/${S3BucketTagKeyPermissive}": false
+                  "s3:BucketTag/${S3BucketTagKeyPermissive}": "false"
                 },
                 "StringNotEquals": {
                   "s3:x-amz-storage-class": "${RequireS3StorageClass}"
@@ -414,7 +414,7 @@ Resources:
                 "Condition": {
                   ${ScpPrincipalCondition}${CommaAfterScpPrincipalCondition}
                   "Null": {
-                    "s3:BucketTag/${S3BucketTagKeyStrict}": true
+                    "s3:BucketTag/${S3BucketTagKeyStrict}": "true"
                   },
                   "ForAnyValue:StringEquals": {
                     "aws:TagKeys": "${S3BucketTagKeyStrict}"
@@ -429,7 +429,7 @@ Resources:
                 "Condition": {
                   ${ScpPrincipalCondition}${CommaAfterScpPrincipalCondition}
                   "Null": {
-                    "s3:BucketTag/${S3BucketTagKeyPermissive}": true
+                    "s3:BucketTag/${S3BucketTagKeyPermissive}": "true"
                   },
                   "ForAnyValue:StringEquals": {
                     "aws:TagKeys": "${S3BucketTagKeyPermissive}"
@@ -444,7 +444,7 @@ Resources:
                 "Condition": {
                   ${ScpPrincipalCondition}${CommaAfterScpPrincipalCondition}
                   "Null": {
-                    "s3:BucketTag/${S3BucketTagKeyStrict}": false
+                    "s3:BucketTag/${S3BucketTagKeyStrict}": "false"
                   },
                   "ForAllValues:StringNotEquals": {
                     "aws:TagKeys": "${S3BucketTagKeyStrict}"
@@ -459,7 +459,7 @@ Resources:
                 "Condition": {
                   ${ScpPrincipalCondition}${CommaAfterScpPrincipalCondition}
                   "Null": {
-                    "s3:BucketTag/${S3BucketTagKeyPermissive}": false
+                    "s3:BucketTag/${S3BucketTagKeyPermissive}": "false"
                   },
                   "ForAllValues:StringNotEquals": {
                     "aws:TagKeys": "${S3BucketTagKeyPermissive}"

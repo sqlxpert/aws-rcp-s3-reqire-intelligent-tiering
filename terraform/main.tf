@@ -23,8 +23,8 @@ resource "aws_organizations_policy" "rcp_s3_bucket_require_storage_class" {
           "Resource": "*",
           "Condition": {
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": false,
-              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": true
+              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": "false",
+              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": "true"
             },
             "StringNotEquals": {
               "s3:x-amz-storage-class": "${var.require_s3_storage_class}"
@@ -39,7 +39,7 @@ resource "aws_organizations_policy" "rcp_s3_bucket_require_storage_class" {
           "Resource": "*",
           "Condition": {
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": false
+              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": "false"
             },
             "StringNotEquals": {
               "s3:x-amz-storage-class": "${var.require_s3_storage_class}"
@@ -120,7 +120,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
           "Condition": {
             ${var.scp_principal_condition}${local.comma_after_scp_principal_condition}
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": true
+              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": "true"
             },
             "ForAnyValue:StringEquals": {
               "aws:TagKeys": "${var.s3_bucket_tag_key_strict}"
@@ -135,7 +135,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
           "Condition": {
             ${var.scp_principal_condition}${local.comma_after_scp_principal_condition}
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": true
+              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": "true"
             },
             "ForAnyValue:StringEquals": {
               "aws:TagKeys": "${var.s3_bucket_tag_key_permissive}"
@@ -150,7 +150,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
           "Condition": {
             ${var.scp_principal_condition}${local.comma_after_scp_principal_condition}
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": false
+              "s3:BucketTag/${var.s3_bucket_tag_key_strict}": "false"
             },
             "ForAllValues:StringNotEquals": {
               "aws:TagKeys": "${var.s3_bucket_tag_key_strict}"
@@ -165,7 +165,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
           "Condition": {
             ${var.scp_principal_condition}${local.comma_after_scp_principal_condition}
             "Null": {
-              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": false
+              "s3:BucketTag/${var.s3_bucket_tag_key_permissive}": "false"
             },
             "ForAllValues:StringNotEquals": {
               "aws:TagKeys": "${var.s3_bucket_tag_key_permissive}"
