@@ -52,6 +52,7 @@ Parameters:
       Recommended: INTELLIGENT_TIERING (the default in this template).
       Not recommended: STANDARD_IA , ONEZONE_IA or GLACIER_IR ; use
       INTELLIGENT_TIERING .
+      Not recommended: GLACIER ; use GLACIER_IR .
       Requires asynchronous retrieval: GLACIER or DEEP_ARCHIVE .
       Suitable if you use this template for permissions rather than cost
       management: STANDARD (the default in S3, except for replication).

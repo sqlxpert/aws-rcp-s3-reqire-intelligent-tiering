@@ -25,7 +25,7 @@ variable "rcp_target_ids" {
 
 variable "require_s3_storage_class" {
   type        = string
-  description = "Storage class in which objects in tagged S3 buckets must be created. Recommended: INTELLIGENT_TIERING (the default in this template). Not recommended: STANDARD_IA , ONEZONE_IA or GLACIER_IR ; use INTELLIGENT_TIERING . Requires asynchronous retrieval: GLACIER or DEEP_ARCHIVE . Suitable if you use this template for permissions rather than cost management: STANDARD (the default in S3, except for replication). Effectively deprecated: REDUCED_REDUNDANCY . See https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html#AmazonS3-PutObject-request-header-StorageClass"
+  description = "Storage class in which objects in tagged S3 buckets must be created. Recommended: INTELLIGENT_TIERING (the default in this template). Not recommended: STANDARD_IA , ONEZONE_IA or GLACIER_IR ; use INTELLIGENT_TIERING . Not recommended: GLACIER ; use GLACIER_IR . Requires asynchronous retrieval: GLACIER or DEEP_ARCHIVE . Suitable if you use this template for permissions rather than cost management: STANDARD (the default in S3, except for replication). Effectively deprecated: REDUCED_REDUNDANCY . See https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html#AmazonS3-PutObject-request-header-StorageClass"
 
   default = "INTELLIGENT_TIERING"
 
@@ -72,7 +72,7 @@ variable "s3_bucket_tag_key_permissive" {
 
 variable "s3_object_tag_key_override_bucket_tag" {
   type        = string
-  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, S3BucketTagKeyPermissive . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
+  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, s3_bucket_tag_key_permissive . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
 
   default = "cost-s3-override-storage-class-intelligent-tiering"
 }

@@ -330,7 +330,7 @@ I parameterized the storage class string, and the tag keys, and appended the
 CloudFormation stack name (or the `rcp_scp_name_suffix` variable, in the
 Terraform module) to the RCP and SCP names, to support multiple concurrent
 installations. In S3 buckets used for logs, you might require that all objects
-be created in the low-price `GLACIER` storage class, or even
+be created in the low-price `GLACIER_IR` storage class, or even
 `DEEP_ARCHIVE`&nbsp;. Perhaps you have some buckets whose objects should always
 start in `STANDARD` class.
 
