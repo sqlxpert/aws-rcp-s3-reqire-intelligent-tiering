@@ -178,7 +178,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
 }
 
 resource "aws_organizations_policy_attachment" "scp_s3_bucket_restrict_tag_and_abac_changes" {
-  for_each = var.apply_scp_target_ids_set
+  for_each = local.apply_scp_target_ids_set
 
   policy_id = aws_organizations_policy.scp_s3_bucket_restrict_tag_and_abac_changes[0].id
   target_id = each.key
