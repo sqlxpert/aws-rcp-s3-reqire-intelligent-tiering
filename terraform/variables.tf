@@ -4,7 +4,7 @@
 
 variable "rcp_scp_name_suffix" {
   type        = string
-  description = "RCP and SCP name suffix, for blue/green deployments or other scenarios in which multiple instances of this module are needed. This should incorporate require_s3_storage_class ."
+  description = "Resource and service control policy name suffix, for blue/green deployments or other scenarios in which you install multiple instances of this module. This suffix should reflect require_s3_storage_class . If you have also installed the CloudFormation template equivalent to this Terraform module, this suffix must differ from the stack name(s)."
 
   default = "S3RequireIntelligentTiering"
 }
@@ -50,14 +50,14 @@ variable "require_s3_storage_class" {
 
 variable "s3_bucket_tag_key_strict" {
   type        = string
-  description = "S3 bucket tag key to require that all objects be created in the designated storage class. To activate, make sure that the AWS account is subject to the RCP, then enable attribute-based access control for the bucket and apply this tag to the bucket. (The tag value is ignored.) Do not apply this tag to a bucket that is the destination of replication rule, unless the rule also specifies the correct storage class. For bucket tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/tagging.html . For ABAC, see  https://docs.aws.amazon.com/AmazonS3/latest/userguide/buckets-tagging-enable-abac.html . For replication storage class, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html#storage-class-configuration"
+  description = "S3 bucket tag key to require that all objects be created in the designated storage class. This should reflect require_s3_storage_class . To activate, make sure that the AWS account is subject to the RCP, then enable attribute-based access control for the bucket and apply this tag to the bucket. (The tag value is ignored.) Do not apply this tag to a bucket that is the destination of replication rule, unless the rule also specifies the correct storage class. For bucket tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/tagging.html . For ABAC, see  https://docs.aws.amazon.com/AmazonS3/latest/userguide/buckets-tagging-enable-abac.html . For replication storage class, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html#storage-class-configuration"
 
   default = "cost-s3-require-storage-class-intelligent-tiering"
 }
 
 variable "s3_bucket_tag_key_permissive" {
   type        = string
-  description = "S3 bucket tag key to require that objects without the overriding S3 object tag be created in the designated storage class. To activate, make sure that the AWS account is subject to the RCP, then enable ABAC for the bucket and apply this tag to the bucket. (The tag value is ignored.) Do not apply this tag to a bucket that is the destination of a replication rule, unless the rule also specifies the correct storage class. This permissive bucket tag key must be different from its non-overridable counterpart. Recommended: Copy s3_bucket_tag_key_strict and append a suffix."
+  description = "S3 bucket tag key to require that objects without the overriding S3 object tag be created in the designated storage class. This should reflect require_s3_storage_class . To activate, make sure that the AWS account is subject to the RCP, then enable ABAC for the bucket and apply this tag to the bucket. (The tag value is ignored.) Do not apply this tag to a bucket that is the destination of a replication rule, unless the rule also specifies the correct storage class. This permissive bucket tag key must be different from its non-overridable counterpart. Recommended: Copy s3_bucket_tag_key_strict and append a suffix."
 
   default = "cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag"
 
@@ -72,7 +72,7 @@ variable "s3_bucket_tag_key_permissive" {
 
 variable "s3_object_tag_key_override_bucket_tag" {
   type        = string
-  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, s3_bucket_tag_key_permissive . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
+  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, s3_bucket_tag_key_permissive . This should reflect require_s3_storage_class . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
 
   default = "cost-s3-override-storage-class-intelligent-tiering"
 }

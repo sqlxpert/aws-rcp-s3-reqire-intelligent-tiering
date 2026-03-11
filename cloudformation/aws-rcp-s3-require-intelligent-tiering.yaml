@@ -10,6 +10,13 @@ Parameters:
 
   PlaceholderSuggestedStackName:
     Type: String
+    Description: >-
+      The stack name will be appended to the resource and service control
+      policy names. The stack name should reflect the required S3 storage
+      class, RequireS3StorageClass .
+      If you have also installed the Terraform module equivalent
+      to this CloudFormation template, the stack name must differ from
+      rcp_scp_name_suffix for all instances of the Terraform module.
     Default: "S3RequireIntelligentTiering"
 
   PlaceholderHelp:
@@ -33,7 +40,7 @@ Parameters:
       Up to 100 r- root ID strings, ou- organizational unit ID strings, and/or
       AWS account ID numbers to which the RCP will apply. Separate multiple
       targets with commas but no spaces. To view the RCP before applying it,
-      leave this blank (the default), or start with EnableRcp set to false .
+      leave this empty (the default), or start with EnableRcp set to false .
       Exercise caution when applying any RCP, but note that this RCP generally
       does not affect pre-existing S3 buckets; it only affects S3 buckets with
       designated tags.
@@ -74,7 +81,8 @@ Parameters:
     Type: String
     Description: >-
       S3 bucket tag key to require that all objects be created in the
-      designated storage class.
+      designated storage class. This should reflect the required S3 storage
+      class, RequireS3StorageClass .
       To activate, make sure that the AWS account is subject to the RCP, then
       enable attribute-based access control for the bucket and apply this tag
       to the bucket. (The tag value is ignored.)
@@ -93,7 +101,8 @@ Parameters:
     Type: String
     Description: >-
       S3 bucket tag key to require that objects without the overriding S3
-      object tag be created in the designated storage class.
+      object tag be created in the designated storage class. This should
+      reflect the required S3 storage class, RequireS3StorageClass .
       To activate, make sure that the AWS account is subject to the RCP, then
       enable ABAC for the bucket and apply this tag to the bucket. (The tag
       value is ignored.)
@@ -109,9 +118,10 @@ Parameters:
     Type: String
     Description: >-
       S3 object tag key to override the required storage class in a bucket
-      tagged with the permissive bucket key, S3BucketTagKeyPermissive . To
-      create an object in a different storage class, set this object tag in the
-      request to create the object, and in every request to overwrite the
+      tagged with the permissive bucket key, S3BucketTagKeyPermissive . This
+      should reflect the required S3 storage class, RequireS3StorageClass .
+      To create an object in a different storage class, set this object tag in
+      the request to create the object, and in every request to overwrite the
       object or create a new version.
       For object tag rules, see
       https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html
@@ -139,7 +149,7 @@ Parameters:
       storage class in tagged buckets. In some organizational units, you might
       want the benefit of the RCP but give all users control over S3 bucket
       tags and ABAC by not applying the SCP. To view the SCP before applying
-      it, leave this blank (the default), or start with EnableScp set to false
+      it, leave this empty (the default), or start with EnableScp set to false
       . Exercise caution when applying this SCP, because it generally does
       reduce existing permissions.
     Default: ""

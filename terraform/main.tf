@@ -55,7 +55,7 @@ resource "aws_organizations_policy" "rcp_s3_bucket_require_storage_class" {
 }
 
 resource "aws_organizations_policy_attachment" "rcp_s3_bucket_require_storage_class" {
-  for_each = local.apply_rcp_target_ids_set
+  for_each = toset(var.enable_rcp ? var.rcp_target_ids : [])
 
   policy_id = aws_organizations_policy.rcp_s3_bucket_require_storage_class.id
   target_id = each.key
@@ -178,7 +178,10 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
 }
 
 resource "aws_organizations_policy_attachment" "scp_s3_bucket_restrict_tag_and_abac_changes" {
-  for_each = local.apply_scp_target_ids_set
+  for_each = toset(
+    (local.generate_scp && var.enable_scp) ? var.scp_target_ids : []
+  )
+
 
   policy_id = aws_organizations_policy.scp_s3_bucket_restrict_tag_and_abac_changes[0].id
   target_id = each.key
