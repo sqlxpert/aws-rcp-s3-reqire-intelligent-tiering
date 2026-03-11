@@ -194,6 +194,8 @@ and 2025.
     [Testing](#testing),
     below, for test scripts and then return to Step&nbsp;9.
 
+    Otherwise, continue with simple, manual testing.
+
  5. [Create](https://console.aws.amazon.com/s3/bucket/create)
     three "general purpose" S3 buckets. Apply tags from the left column of the
     table in Step&nbsp;7 as you create the buckets. Under "Tags - optional",
@@ -204,7 +206,7 @@ and 2025.
     select each bucket in turn, open the "Properties" tab, and scroll down to
     "Bucket ABAC". Click "Edit" and enable ABAC.
 
- 7. Test the RCP by creating objects in the buckets:
+ 7. Try to create three objects in each of the three buckets:
 
     |**Step&nbsp;7: Create objects in these classes &rarr;**|Standard|Intelligent&nbsp;Tiering|Standard|
     |:---|:---:|:---:|:---:|
