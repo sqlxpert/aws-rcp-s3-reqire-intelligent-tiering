@@ -70,7 +70,7 @@ bucket with
 `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`&nbsp;.
 
 In this bucket, a user can create an object in any storage class by setting the
-`cost-s3-override-storage-class-intelligent-tiering` _object tag_. Add:
+`cost-s3-override-storage-class-intelligent-tiering` _object tag_. Just add:
 
 - `--tagging 'cost-s3-override-storage-class-intelligent-tiering='`<br/>when
   running `aws s3api put-object` (~`aws s3 cp`~ does not support tags.)
@@ -145,7 +145,7 @@ and 2025.
     [AWS Identity and Access Management simplifies policy management](https://aws.amazon.com/about-aws/whats-new/2015/02/11/aws-identity-and-access-management-simplifies-policy-management)
 
     December&nbsp;14,&nbsp;2015:
-    [Condition keys for Amazon S3: s3:x-amz-storage-class](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WhatsNew.html#WhatsNew-earlier-doc-history:~:text=IAM%20policies%20now%20support,x%2Damz%2Dstorage%2Dclass%20condition%20key.)
+    [IAM policies now support an Amazon S3 s3:x-amz-storage-class condition key](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WhatsNew.html#WhatsNew-earlier-doc-history:~:text=IAM%20policies%20now%20support,condition%20key.)
 
     February&nbsp;27,&nbsp;2017:
     [AWS Organizations Now Generally Available](https://aws.amazon.com/about-aws/whats-new/2017/02/aws-organizations-now-generally-available)
@@ -155,7 +155,7 @@ and 2025.
 
     - To understand why not even SCPs provided a sufficient policy scope for
       this application, see
-      [Differences between SCPs and RCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_authorization_policies.html#understanding-scps-and-rcps)
+      [Differences between SCPs and RCPs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_authorization_policies.html#understanding-scps-and-rcps).
 
 </details>
 
@@ -183,9 +183,6 @@ and 2025.
         (&nbsp;`RcpTargetIds`&nbsp;):
         Enter the number of the account or the `ou-` ID of the organizational
         unit that you use for testing resource control policies.
-      - See
-        [Advanced Topics](#advanced-topics),
-        below, for potential customizations.
 
     - **Terraform**
 
@@ -205,13 +202,9 @@ and 2025.
       }
       ```
 
-      Populate the `rcp_target_ids` array with a string for the number of the
+      Populate the `rcp_target_ids` list with a string for the number of the
       account or the `ou-` ID of the organizational unit that you use for
       testing resource control policies.
-
-      See
-      [Advanced Topics](#advanced-topics),
-      below, for potential customizations.
 
       Have Terraform download the module's source code. Review the plan before
       typing `yes` to allow Terraform to proceed with applying the changes.
@@ -296,7 +289,7 @@ and 2025.
 - The resource control policy regulates only the _initial_ storage class.
   Lifecycle transition rules may later transition an object or object version
   to a different storage class.
-  [S3 resource-based policies do not restrict lifecycle rules.](https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-expire-general-considerations.html#:~:text=You%20can't%20use%20a%20bucket%20,S3%20Lifecycle%20rule.)
+  [S3 resource-based policies do not restrict lifecycle rules.](https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-expire-general-considerations.html#:~:text=You%20can't%20use%20a%20bucket%20policy,S3%20Lifecycle%20rule.)
 
 ### Custom Tag Keys
 
@@ -359,8 +352,8 @@ special bucket tags in an
 request. An exempt role would still have to enable ABAC for the new bucket.
 Unfortunately, it is not possible to delegate permission to enable ABAC without
 also delegating permission to disable it. A single API action,
-[s3:PutBucket](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketAbac.html),
-serves to enable _and_ disable ABAC, and as of March,&nbsp;2026, S3 lacks a
+[s3:PutBucketAbac](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketAbac.html)&nbsp;,
+serves to enable _and_ disable ABAC. As of March,&nbsp;2026, S3 lacks a
 [condition key](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-policy-keys)
 for checking a bucket's current ABAC status.
 
@@ -380,15 +373,15 @@ To support multiple concurrent installations, I have parameterized:
 - the name suffix for the RCP and SCP (It's the CloudFormation stack name, or
   the `rcp_scp_name_suffix` variable in the Terraform module.)
 
-[Requiring `INTELLIGENT_TIERING` is best for most S3 use cases](https://builder.aws.com/content/38nqWWauUbgfDsAzx2FpigrfAMv/intelligent-tiering-is-the-best-s3-storage-class-but-data-retrieval-is-not-free#:~:text=Heuristics),
+Requiring `INTELLIGENT_TIERING` is
+[best for most S3 use cases](https://builder.aws.com/content/38nqWWauUbgfDsAzx2FpigrfAMv/intelligent-tiering-is-the-best-s3-storage-class-but-data-retrieval-is-not-free#:~:text=Heuristics),
 but in buckets for seldom-accessed logs, you might require that all objects be
 created in `GLACIER_IR` storage class (low storage price, high retrieval
 charge), or even in
 [`DEEP_ARCHIVE`](https://builder.aws.com/content/38nzuuU92cmS7nEhDEZNrhjAtG5/save-more-on-s3-storage-by-implementing-asynchronous-retrieval)
-(very low storage price, two-step asynchronous retrieval semantics). Perhaps
-you have some buckets whose objects are always frequently-accessed and
-short-lived, and you want to be sure that objects can only be created in
-`STANDARD` class.
+(very low storage price, two-step asynchronous retrieval). Perhaps you have
+some buckets whose objects are always frequently-accessed and short-lived, and
+you want to be sure that objects can only be created in `STANDARD` class.
 
 </details>
 
@@ -470,6 +463,7 @@ above, the role you use for testing the **R**CP must:
 Test the RCP by cloning this repository and running:
 
 ```shell
+git clone 'https://github.com/sqlxpert/aws-rcp-s3-require-intelligent-tiering.git'
 cd aws-rcp-s3-require-intelligent-tiering
 ./test/0test-rcp-s3-require-intelligent-tiering.bash
 ```
