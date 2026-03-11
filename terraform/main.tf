@@ -74,7 +74,7 @@ resource "aws_organizations_policy" "scp_s3_bucket_restrict_tag_and_abac_changes
 
   type        = "SERVICE_CONTROL_POLICY"
   name        = "S3BucketRestrictTagAndAbacChanges-${var.rcp_scp_name_suffix}"
-  description = "S3 bucket: Matching IAM principals cannot set/change/remove '${var.s3_bucket_tag_key_strict}' or '${S3BucketTagKeyPermissive}' bucket tags, or enable/disable ABAC. Applicable tag permissions vary based on ABAC status; see statement IDs. GPLv3, Copyright Paul Marcelin. github.com/sqlxpert"
+  description = "S3 bucket: Matching IAM principals cannot set/change/remove '${var.s3_bucket_tag_key_strict}' or '${var.s3_bucket_tag_key_permissive}' bucket tags, or enable/disable ABAC. Applicable tag permissions vary based on ABAC status; see statement IDs. GPLv3, Copyright Paul Marcelin. github.com/sqlxpert"
 
   # See "Semantics" comment in
   # ../cloudformation/aws-rcp-s3-require-intelligent-tiering.yaml
