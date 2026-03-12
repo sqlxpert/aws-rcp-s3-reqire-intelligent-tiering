@@ -23,10 +23,8 @@ thousands of buckets.
 
 ### Strict Bucket Tag
 
-To require Intelligent Tiering for all new objects, tag a new S3 bucket with
-`cost-s3-require-storage-class-intelligent-tiering` and enable
-[attribute-based access control](https://aws.amazon.com/blogs/aws/introducing-attribute-based-access-control-for-amazon-s3-general-purpose-buckets)
-for the bucket.
+`cost-s3-require-storage-class-intelligent-tiering` &larr; Tag a new S3 bucket
+to require Intelligent Tiering for all new objects.
 
 Users who forget to add...
 
@@ -65,20 +63,21 @@ Jump to:
 
 ### Object Tag Override
 
-To require Intelligent Tiering but permit occasional overrides, tag a new S3
-bucket with
-`cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`&nbsp;.
+`cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
+&larr; Tag a new S3 bucket to require Intelligent Tiering but permit occasional
+overrides.
 
-In _this_ bucket, a user can create an object in any storage class by setting
-the `cost-s3-override-storage-class-intelligent-tiering` _object tag_. Just
-add:
+`cost-s3-override-storage-class-intelligent-tiering` &larr; Tag an object to
+create it in a different storage class like `STANDARD`&nbsp;. Just add:
 
-- `--tagging 'cost-s3-override-storage-class-intelligent-tiering='`<br/>when
-  running `aws s3api put-object` (~`aws s3 cp`~ does not support tags.)
-- `Tagging="cost-s3-override-storage-class-intelligent-tiering="`<br/>when
-  calling `client("s3").put_object()` (or equivalent)
-- `x-amz-tagging: cost-s3-override-storage-class-intelligent-tiering=`<br/>
-  (Encode `=` as `%3D` if your HTTP library doesn't.)
+- `--tagging 'cost-s3-override-storage-class-intelligent-tiering='
+   --storage-class STANDARD`<br/>when running `aws s3api put-object`
+   (~`aws s3 cp`~ doesn't accept tags.)
+- `Tagging="cost-s3-override-storage-class-intelligent-tiering=", StorageClass="STANDARD"`<br/>
+  when calling `client("s3").put_object()` (or equivalent)
+- `x-amz-tagging: cost-s3-override-storage-class-intelligent-tiering=` and<br/>
+  `x-amz-storage-class: STANDARD` (Encode `=` as `%3D` if your HTTP library
+  doesn't.)
 
 Jump to:
 [Installation](#installation)
@@ -252,7 +251,8 @@ and 2025.
  7. In the list of
     [buckets](https://console.aws.amazon.com/s3/buckets),
     select each bucket in turn, open the "Properties" tab, and scroll down to
-    "Bucket ABAC". Click "Edit" and enable ABAC.
+    "Bucket ABAC". Click "Edit" and enable ABAC. The RCP won't work unless ABAC
+    is enabled for the bucket.
 
  8. Try to create three objects in each of the three buckets. Combinations
     marked &check; should succeed, and ones marked &cross; should produce the
