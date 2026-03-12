@@ -139,7 +139,7 @@ and 2025.
     customer-managed IAM policy can be attached to multiple roles, but only in
     one AWS account. Later, AWS launched AWS&nbsp;Organizations, introducing
     service control policies that can cover all roles in one or more accounts.
-    Even later, AWS relaxed limitations on conditions in SCPs.
+    Much later, AWS relaxed limitations on conditions in SCPs.
 
     February&nbsp;11,&nbsp;2015:
     [AWS Identity and Access Management simplifies policy management](https://aws.amazon.com/about-aws/whats-new/2015/02/11/aws-identity-and-access-management-simplifies-policy-management)
