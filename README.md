@@ -177,11 +177,10 @@ and 2025.
     Make sure that...
 
     - the [resource control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
-      policy type and
+      and
     - the [service control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
-      policy type
 
-    ...are both enabled.
+    ...policy types are both enabled.
 
  3. Install using CloudFormation or Terraform.
 
