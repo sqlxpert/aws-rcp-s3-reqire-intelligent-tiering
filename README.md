@@ -174,11 +174,11 @@ and 2025.
 
     Review
     [AWS&nbsp;Organizations Policies](https://console.aws.amazon.com/organizations/v2/home/policies).
-    Make sure that...
+    Make sure that the...
 
-    - the [resource control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
+    - [resource control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
       and
-    - the [service control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+    - [service control policy](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
 
     ...policy types are both enabled.
 
