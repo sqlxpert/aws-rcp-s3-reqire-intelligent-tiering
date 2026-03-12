@@ -123,6 +123,7 @@ Parameters:
       To create an object in a different storage class, set this object tag in
       the request to create the object, and in every request to overwrite the
       object or create a new version.
+      This object tag key must be different from both bucket tag keys.
       For object tag rules, see
       https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html
     Default: "cost-s3-override-storage-class-intelligent-tiering"
@@ -251,6 +252,21 @@ Rules:
             - !Ref S3BucketTagKeyPermissive
             - !Ref S3BucketTagKeyStrict
 
+  S3ObjectTagKeyOverrideBucketTagDiffersFromS3BucketTagKeys:
+    Assertions:
+      - AssertDescription: >-
+          S3ObjectTagKeyOverrideBucketTag must be different from
+          S3BucketTagKeyStrict and S3BucketTagKeyPermissive
+        Assert: !And
+          - !Not
+            - !Equals
+              - !Ref S3ObjectTagKeyOverrideBucketTag
+              - !Ref S3BucketTagKeyStrict
+          - !Not
+            - !Equals
+              - !Ref S3ObjectTagKeyOverrideBucketTag
+              - !Ref S3BucketTagKeyPermissive
+
 Conditions:
 
   EnableRcpTrue: !And
@@ -322,6 +338,18 @@ Resources:
                 },
                 "ForAllValues:StringNotEquals": {
                   "s3:RequestObjectTagKeys": "${S3ObjectTagKeyOverrideBucketTag}"
+                }
+              }
+            },
+            {
+              "Sid": "S3BucketForbidConfusingObjectTag",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:TagResource",
+              "Resource": "*",
+              "Condition": {
+                "ForAnyValue:StringEquals": {
+                  "aws:TagKeys": "${S3ObjectTagKeyOverrideBucketTag}"
                 }
               }
             }

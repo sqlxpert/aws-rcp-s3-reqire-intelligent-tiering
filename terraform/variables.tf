@@ -72,9 +72,21 @@ variable "s3_bucket_tag_key_permissive" {
 
 variable "s3_object_tag_key_override_bucket_tag" {
   type        = string
-  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, s3_bucket_tag_key_permissive . This should reflect require_s3_storage_class . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
+  description = "S3 object tag key to override the required storage class in a bucket tagged with the permissive bucket key, s3_bucket_tag_key_permissive . This should reflect require_s3_storage_class . To create an object in a different storage class, set this object tag in the request to create the object, and in every request to overwrite the object or create a new version. This object tag key must be different from both bucket tag keys. For object tag rules, see https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html"
 
   default = "cost-s3-override-storage-class-intelligent-tiering"
+
+  validation {
+    error_message = "Must be different from s3_bucket_tag_key_strict and s3_bucket_tag_key_permissive ."
+
+    condition = !contains(
+      [
+        var.s3_bucket_tag_key_strict,
+        var.s3_bucket_tag_key_permissive,
+      ],
+      var.s3_object_tag_key_override_bucket_tag
+    )
+  }
 }
 
 variable "enable_scp" {

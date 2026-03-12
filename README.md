@@ -69,8 +69,9 @@ To require Intelligent Tiering but permit occasional overrides, tag a new S3
 bucket with
 `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`&nbsp;.
 
-In this bucket, a user can create an object in any storage class by setting the
-`cost-s3-override-storage-class-intelligent-tiering` _object tag_. Just add:
+In _this_ bucket, a user can create an object in any storage class by setting
+the `cost-s3-override-storage-class-intelligent-tiering` _object tag_. Just
+add:
 
 - `--tagging 'cost-s3-override-storage-class-intelligent-tiering='`<br/>when
   running `aws s3api put-object` (~`aws s3 cp`~ does not support tags.)
@@ -308,13 +309,21 @@ and 2025.
 
 ### Semantics
 
-- If _both_ bucket tags are applied to the same S3 bucket, the strict bucket
-  tag loses and the permissive bucket tag wins; users can override the required
-  storage class with the object tag. I chose this interpretation to avoid
-  contradicting what users can see: "-override-with-object-tag" in one of the
-  bucket's two tags.
-- Set the required storage class (or the override tag, if the bucket tag
-  allows overrides) when overwriting an object or creating a new version.
+- When overwriting an object or creating a new version, set the required
+  storage class (or the `cost-s3-override-storage-class-intelligent-tiering`
+  object tag, if the bucket tag is
+  `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`&nbsp;).
+- If _both_
+  `cost-s3-require-storage-class-intelligent-tiering` and
+  `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
+  are applied to the same bucket, the strict bucket tag loses and the
+  permissive bucket tag wins; users can override the required storage class
+  by setting the `cost-s3-override-storage-class-intelligent-tiering` _object
+  tag_. This interpretation avoids contradicting what users can see:
+  "-override-with-object-tag" in one of the bucket's two tags.
+- The RCP forbids applying `cost-s3-override-storage-class-intelligent-tiering`
+  to any _bucket_ with attribute-based access control enabled. This tag is
+  meant for objects. On a bucket, it could cause confusion.
 - The resource control policy regulates only the _initial_ storage class.
   Lifecycle transition rules may later transition an object or object version
   to a different storage class.
@@ -595,7 +604,7 @@ To test the SCP,
 
 11. Try to add any tags not already present:
 
-    - `cost-s3-require-storage-class-intelligent-tiering-override`
+    - `cost-s3-require-storage-class-intelligent-tiering`
     - `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
 
     Each attempt should produce an error.
@@ -606,7 +615,7 @@ To test the SCP,
 
 14. Try to delete one of these tags, if it is present:
 
-    - `cost-s3-require-storage-class-intelligent-tiering-override`
+    - `cost-s3-require-storage-class-intelligent-tiering`
     - `cost-s3-require-storage-class-intelligent-tiering-override-with-object-tag`
 
     This should produce an error.
@@ -623,7 +632,7 @@ To test the SCP,
 17. Delete the test buckets.
 
     ```shell
-    ./14test-scp-s3-bucket-restrict-tag-and-abac-changes.bash
+    ./18test-scp-s3-bucket-restrict-tag-and-abac-changes.bash
     ```
 
 Unfortunately, as of March,&nbsp;2026, the AWS CLI includes the old S3 tagging

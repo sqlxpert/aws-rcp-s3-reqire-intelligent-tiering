@@ -49,6 +49,18 @@ resource "aws_organizations_policy" "rcp_s3_bucket_require_storage_class" {
               "s3:RequestObjectTagKeys": "${var.s3_object_tag_key_override_bucket_tag}"
             }
           }
+        },
+        {
+          "Sid": "S3BucketForbidConfusingObjectTag",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "s3:TagResource",
+          "Resource": "*",
+          "Condition": {
+            "ForAnyValue:StringEquals": {
+              "aws:TagKeys": "${var.s3_object_tag_key_override_bucket_tag}"
+            }
+          }
         }
       ]
     }
