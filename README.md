@@ -38,7 +38,7 @@ Users who forget to add...
 administrator where to look: "explicit deny in a resource control policy".
 
 <details>
-  <summary>See the complete error message</summary>
+  <summary>See the full error message</summary>
 
 <br/>
 
@@ -66,7 +66,7 @@ Jump to:
 overrides.
 
 `cost-s3-override-storage-class-intelligent-tiering` &larr; Tag an object to
-create it in a different storage class like `STANDARD`&nbsp;. Just add:
+create it in a different storage class like `STANDARD`&nbsp;. Add:
 
 - `--tagging 'cost-s3-override-storage-class-intelligent-tiering='
    --storage-class STANDARD`<br/>when running `aws s3api put-object`
@@ -76,6 +76,9 @@ create it in a different storage class like `STANDARD`&nbsp;. Just add:
 - `x-amz-tagging: cost-s3-override-storage-class-intelligent-tiering=`<br/>
   `x-amz-storage-class: STANDARD` (Encode `=` as `%3D` if your HTTP library
   doesn't.)
+
+You don't need the storage class option/parameter/header for `STANDARD`&nbsp;,
+but I show it here in case you have a non-default storage class in mind.
 
 Jump to:
 [Installation](#installation)
@@ -456,7 +459,8 @@ don't control! For a bucket that is the destination of a replication rule,
 [set the storage class in the replication rule](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html#storage-class-configuration).
 
 You must also remove existing lifecycle _transition_ rules if they would
-[conflict](https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-transition-general-considerations.html#lifecycle-general-considerations-transition-sc) with the new initial storage class. For example, if you require that new
+[conflict](https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-transition-general-considerations.html#lifecycle-general-considerations-transition-sc)
+with the new initial storage class. For example, if you require that new
 objects be created in the Intelligent Tiering storage class, do not then
 transition them to other storage classes.
 
