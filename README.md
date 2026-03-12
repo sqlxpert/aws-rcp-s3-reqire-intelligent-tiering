@@ -232,16 +232,16 @@ and 2025.
       terraform apply
       ```
 
- 4. Authenticate in your test AWS account or an account in your test
-    organizational unit. (RCPs do not affect resources, such as S3 buckets,
-    created in your AWS&nbsp;Organizations management account.) Choose a role
-    with full S3 permissions.
-
- 5. If you're an advanced user, see
+ 4. If you're an advanced user, see
     [Testing](#testing),
     below, for test scripts. After testing, return to Step&nbsp;10.
 
-    Otherwise, continue with manual testing.
+    Otherwise, continue with manual testing...
+
+ 5. Authenticate in your test AWS account or an account in your test
+    organizational unit. (RCPs do not affect resources, such as S3 buckets,
+    created in your AWS&nbsp;Organizations management account.) Choose a role
+    with full S3 permissions.
 
  6. [Create](https://console.aws.amazon.com/s3/bucket/create)
     three "general purpose" S3 buckets. Apply tags from the left column of the
