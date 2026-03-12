@@ -323,8 +323,8 @@ and 2025.
   [s3:PutBucketAbac](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketAbac.html)&nbsp;,
   serves to enable _and_ disable ABAC, and there is no
   [condition key](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-policy-keys)
-  for checking a bucket's ABAC status, but S3 enforces tag conditions only when
-  ABAC is enabled!)
+  for checking a bucket's ABAC status, but a condition requiring a bucket tag
+  will be enforced if ABAC is enabled!)
 - To prevent confusion, the RCP forbids applying
   `cost-s3-override-storage-class-intelligent-tiering` to any bucket with ABAC
   enabled. That tag is meant for new objects. It has no effect on a bucket.
