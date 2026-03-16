@@ -66,7 +66,9 @@ Jump to:
 overrides.
 
 `cost-s3-override-storage-class-intelligent-tiering` &larr; Tag an object to
-create it in a different storage class like `STANDARD`&nbsp;. Add:
+create it in a different storage class.
+
+Add:
 
 - `--tagging 'cost-s3-override-storage-class-intelligent-tiering='
    --storage-class STANDARD`<br/>when running `aws s3api put-object`
@@ -88,6 +90,10 @@ Jump to:
 [Testing](#testing)
 
 ## How It Works
+
+This CloudFormation or Terraform template is a practical solution to Cloud
+Efficiency Hub report
+[CER-0032 Delayed Transition of Objects to Intelligent-Tiering in an S3 Bucket](https://hub.pointfive.co/inefficiencies/delayed-transition-of-objects-to-intelligent-tiering-in-an-s3-bucket).
 
 Just 40&nbsp;lines of JSON in a resource control policy suffice to deny
 `s3:PutObject` requests if the bucket has a particular bucket tag and the
@@ -309,13 +315,12 @@ and 2025.
 
 ### Semantics
 
-- **When overwriting** an object or creating a new version, **set the required
-  storage class** (or the object tag, if the bucket has the permissive bucket
-  tag).
-- If a bucket has both bucket tags, **the permissive bucket tag wins out over
-  the strict bucket tag**; users can override the required storage class by
+- **Set the required storage class when overwriting** an object or creating a
+  new version (or set the object tag, if the bucket tag allows overrides).
+- **The permissive bucket tag wins out over the strict bucket tag.** If a
+  bucket has both bucket tags, users can override the required storage class by
   setting the object tag. This interpretation avoids contradicting what users
-  can _see_: "-override-with-object-tag" in one of the bucket's two tags.
+  _see_: "-override-with-object-tag" in one of the bucket's two tags.
 - **The RCP forbids disabling attribute-based access control if either bucket
   tag is present.** Before disabling ABAC, remove the bucket tag. (Linking ABAC
   with bucket tags allows delegating permission to enable ABAC without also
@@ -324,7 +329,7 @@ and 2025.
   serves to enable _and_ disable ABAC, and there is no
   [condition key](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html#amazons3-policy-keys)
   for checking a bucket's ABAC status, but a condition requiring a bucket tag
-  will be enforced if ABAC is enabled!)
+  will only be enforced if ABAC is enabled!)
 - To prevent confusion, the RCP forbids applying
   `cost-s3-override-storage-class-intelligent-tiering` to any bucket with ABAC
   enabled. That tag is meant for new objects. It has no effect on a bucket.
