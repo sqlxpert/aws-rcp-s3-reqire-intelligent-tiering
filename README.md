@@ -546,12 +546,12 @@ cd aws-rcp-s3-require-intelligent-tiering/test
 
 <br/>
 
-Testing the SCP requires two roles, one role that is exempt from the SCP and
-another that is subject to it. Both roles must be in the same AWS account, and
-they must meet the requirements in
+Testing the **S**CP requires two roles, one role that is exempt from the SCP
+and another that is subject to it. Both roles must be in the same AWS account,
+and they must meet the requirements in
 [Test Setup](#test-setup),
-above. Because the test process requires switching back and forth, steps that
-require the exempt role are marked _(SCP-exempt role)_, below.
+above. Because the test process requires switching back and forth, steps below
+that require the exempt role are marked _(SCP-exempt role)_.
 
 The SCP test scripts default to using the AWS account number and the UTC date
 to generate a unique S3 bucket name prefix. Because the scripts might be
