@@ -43,7 +43,7 @@ Users who forget to...
 
 ...get an "AccessDenied" error. In case a user missed
 "require-storage-class"... in the bucket tag, the error message tells an
-administrator where to look: "explicit deny in a resource control policy".
+administrator where to look: "explicit deny in a resource control policy: arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-abcdefghij".
 
 <details>
   <summary>See the full error message</summary>
@@ -55,7 +55,8 @@ An error occurred (AccessDenied) when calling the PutObject operation:
 User: arn:aws:sts::112233445566:assumed-role/AWSReservedSSO_PermSetName_0123456789abcdef/abcde
 is not authorized to perform: s3:PutObject
 on resource: "arn:aws:s3:::test-intelligent-tiering-class-only/standard.txt"
-with an explicit deny in a resource control policy
+with an explicit deny in a resource control policy:
+arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-abcdefghij
 ```
 
 </details>
@@ -117,7 +118,28 @@ features introduced in 2024 and 2025.
 
 <br/>
 
- 1. With attribute-based access control, S3 now checks bucket tags when
+ 1. S3 errors now mention the policy ARN. If users miss
+    "require-storage-class"... in the bucket's tag, an administrator knows
+    exactly which policy to check in AWS&nbsp;Organizations because the error
+    message mentions "a resource control policy:
+    arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-abcdefghij".
+
+    August,&nbsp;2026 (implemented for S3):
+    [Amazon S3 adds additional policy details to access denied error messages](https://aws.amazon.com/about-aws/whats-new/2026/08/s3-additional-policy-details-access-denied-error-messages)
+
+    January,&nbsp;2026 (announced):
+    [AWS introduces additional policy details to access denied error messages](https://aws.amazon.com/about-aws/whats-new/2026/01/additional-policy-details-access-denied-error#:~:text=additional%20context,across%20AWS%20services)
+
+    - &#129668; Wish list: Instead of automatically assigning a meaningless
+      identifier, AWS&nbsp;Organizations should give administrators the option
+      to specify a meaningful policy identifier when creating a resource
+      control or service control policy. Ten alphanumeric characters doesn't
+      seem like much, but
+      `arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-s3badclass`
+      would be self-explanatory! Dereferencing an RCP ARN requires privileges
+      that most AWS users don't have.
+
+ 2. With **attribute-based access control**, S3 now checks bucket tags when
     authorizing requests. Users can _see_ the bucket tag, so they know the
     rules. A resource control policy won't break existing systems, because an
     existing bucket is excluded until it is tagged and its ABAC setting is
@@ -126,34 +148,22 @@ features introduced in 2024 and 2025.
     November,&nbsp;2025:
     [Amazon S3 now supports attribute-based access control](https://aws.amazon.com/about-aws/whats-new/2025/11/amazon-s3-attribute-based-access-control)
 
- 2. S3 errors now mention the type of policy. If users miss
-    "require-storage-class"... in the bucket's tag, an administrator knows to
-    check AWS&nbsp;Organizations because the error message mentions "a resource
-    control policy".
+ 3. S3 errors mentioned the type of policy. If users missed
+    "require-storage-class"... in the bucket's tag, an administrator knew to
+    check AWS&nbsp;Organizations because the error message mentioned "a
+    resource control policy".
 
     June,&nbsp;2025:
     [Amazon S3 extends additional context for HTTP 403 Access Denied error messages to AWS Organizations](https://aws.amazon.com/about-aws/whats-new/2025/06/amazon-s3-context-http-403-access-denied-error-message-aws-organizations)
 
-    - &#129668; Wish list: Someday, S3 error messages might reveal the resource
-      control policy's ARN. What a shame that AWS&nbsp;Organizations assigns an
-      arbitrary resource identifier instead of letting me specify a meaningful
-      one!
-      `arn:aws:organizations::112233445566:policy/o-abcdefghij/resource_control_policy/p-abcdefghij`
-      would be more specific than "a resource control policy", but still not
-      self-explanatory. Dereferencing an RCP ARN requires substantial
-      privileges.
-
-      January,&nbsp;2026:
-      [AWS introduces additional policy details to access denied error messages](https://aws.amazon.com/about-aws/whats-new/2026/01/additional-policy-details-access-denied-error)
-
- 3. One resource control policy can cover all S3 buckets in one or more AWS
+ 4. One resource control policy can cover all S3 buckets in one or more AWS
     accounts. It's no longer necessary to edit the bucket policy for each
     individual bucket and check for drift.
 
     November,&nbsp;2024:
     [Introducing resource control policies (RCPs) to centrally restrict access to AWS resources](https://aws.amazon.com/about-aws/whats-new/2024/11/resource-control-policies-restrict-access-aws-resources)
 
- 4. The `s3:x-amz-storage-class` condition key makes it possible to restrict
+ 5. The `s3:x-amz-storage-class` condition key makes it possible to restrict
     the storage class of new objects. At first, the available policy scopes
     were limited: a bucket policy affects only one bucket, and a named,
     customer-managed IAM policy can be attached to multiple roles, but only in
